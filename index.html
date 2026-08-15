@@ -94,7 +94,7 @@
   <!-- Audio Element with exact file name -->
   <!-- Main Audio (High Volume) -->
 <audio id="memeAudio" loop preload="auto">
-  <source src="ReelAudio-2935.mp3" type="audio/mpeg">
+  <source src="ReelAudio-76988.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Background Audio (Low Volume) -->
@@ -130,12 +130,12 @@
 
       // Main Audio (High Volume - 100%)
   const sound1 = document.getElementById('memeAudio');
-  sound1.volume = 0.25; 
+  sound1.volume = 1.25; 
   sound1.play().catch(e => console.error("Audio 1 error:", e));
 
   // Second Audio (Low Volume - 25%)
   const sound2 = document.getElementById('bgAudio');
-  sound2.volume = 1.0; // 0.0 (silent) se 1.0 (full) ke darmayan volume set kar sakte hain
+  sound2.volume = 0.25; // 0.0 (silent) se 1.0 (full) ke darmayan volume set kar sakte hain
   sound2.play().catch(e => console.error("Audio 2 error:", e));
 
       // 3D Animation speed increase
