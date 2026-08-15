@@ -148,6 +148,25 @@
       mesh.material.wireframe = false;
       mesh.material.color.setHex(0xff0055);
     }
+    function revealPrank() {
+      const name = document.getElementById('username').value.trim();
+      if (!name) return alert("Please enter your name first!");
+
+      document.getElementById('display-name').innerText = name;
+      document.getElementById('input-card').classList.add('hidden');
+      document.getElementById('prank-card').classList.remove('hidden');
+
+      // Audio play trigger on user click
+      const sound = document.getElementById('memeAudio');
+      sound.play().catch(error => {
+        console.error("Audio playback error:", error);
+      });
+
+      // 3D Animation speed increase
+      speed = 0.08;
+      mesh.material.wireframe = false;
+      mesh.material.color.setHex(0xff0055);
+    }
 
     // --- 3D Scene Setup (Three.js) ---
     const container = document.getElementById('canvas-container');
