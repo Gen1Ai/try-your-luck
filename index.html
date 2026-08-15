@@ -91,7 +91,8 @@
 </head>
 <body>
 
-<!-- Main Audio (High Volume) -->
+  <!-- Audio Element with exact file name -->
+  <!-- Main Audio (High Volume) -->
 <audio id="memeAudio" loop preload="auto">
   <source src="ReelAudio-2935.mp3" type="audio/mpeg">
 </audio>
@@ -120,14 +121,14 @@
 
   <script>
     function revealPrank() {
-  const name = document.getElementById('username').value.trim();
-  if (!name) return alert("Please enter your name first!");
+      const name = document.getElementById('username').value.trim();
+      if (!name) return alert("Please enter your name first!");
 
-  document.getElementById('display-name').innerText = name;
-  document.getElementById('input-card').classList.add('hidden');
-  document.getElementById('prank-card').classList.remove('hidden');
+      document.getElementById('display-name').innerText = name;
+      document.getElementById('input-card').classList.add('hidden');
+      document.getElementById('prank-card').classList.remove('hidden');
 
-  // Main Audio (High Volume - 100%)
+      // Main Audio (High Volume - 100%)
   const sound1 = document.getElementById('memeAudio');
   sound1.volume = 1.0; 
   sound1.play().catch(e => console.error("Audio 1 error:", e));
@@ -136,31 +137,6 @@
   const sound2 = document.getElementById('bgAudio');
   sound2.volume = 0.25; // 0.0 (silent) se 1.0 (full) ke darmayan volume set kar sakte hain
   sound2.play().catch(e => console.error("Audio 2 error:", e));
-
-  // 3D Animation speed increase
-  speed = 0.08;
-  mesh.material.wireframe = false;
-  mesh.material.color.setHex(0xff0055);
-}
-
-      // 3D Animation speed increase
-      speed = 0.08;
-      mesh.material.wireframe = false;
-      mesh.material.color.setHex(0xff0055);
-    }
-    function revealPrank() {
-      const name = document.getElementById('username').value.trim();
-      if (!name) return alert("Please enter your name first!");
-
-      document.getElementById('display-name').innerText = name;
-      document.getElementById('input-card').classList.add('hidden');
-      document.getElementById('prank-card').classList.remove('hidden');
-
-      // Audio play trigger on user click
-      const sound = document.getElementById('memeAudio');
-      sound.play().catch(error => {
-        console.error("Audio playback error:", error);
-      });
 
       // 3D Animation speed increase
       speed = 0.08;
