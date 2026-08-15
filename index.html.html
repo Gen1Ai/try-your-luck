@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exclusive Access</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0b0b12;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      max-width: 400px;
+      width: 90%;
+    }
+    h2 { margin-bottom: 20px; font-size: 1.5rem; letter-spacing: 1px; }
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      text-align: center;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #ff007f, #7928ca);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
+    }
+    .hidden { display: none; }
+    
+    .prank-text {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #ff0055;
+      text-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055, 0 0 40px #ff0055;
+      animation: pulse 0.4s infinite alternate, shake 0.1s infinite;
+    }
+    .friend-name { color: #00f0ff; text-transform: capitalize; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      50% { transform: translate(-2px, -1px) rotate(-1deg); }
+      100% { transform: translate(2px, 2px) rotate(1deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Audio Element with exact file name -->
+  <audio id="memeAudio" loop preload="auto">
+    <source src="ReelAudio-2935.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="canvas-container"></div>
+
+  <!-- Input Screen -->
+  <div class="card" id="input-card">
+    <h2>Enter Your Name to Continue</h2>
+    <input type="text" id="username" placeholder="Type name here..." required>
+    <button onclick="revealPrank()">Reveal Secret</button>
+  </div>
+
+  <!-- Prank Display Screen -->
+  <div class="card hidden" id="prank-card">
+    <div class="prank-text">
+      <span class="friend-name" id="display-name"></span>,<br>
+      YOU GOT FUCKED! 😂
+    </div>
+  </div>
+
+  <script>
+    function revealPrank() {
+      const name = document.getElementById('username').value.trim();
+      if (!name) return alert("Please enter your name first!");
+
+      document.getElementById('display-name').innerText = name;
+      document.getElementById('input-card').classList.add('hidden');
+      document.getElementById('prank-card').classList.remove('hidden');
+
+      // Audio play trigger on user click
+      const sound = document.getElementById('memeAudio');
+      sound.play().catch(error => {
+        console.error("Audio playback error:", error);
+      });
+
+      // 3D Animation speed increase
+      speed = 0.08;
+      mesh.material.wireframe = false;
+      mesh.material.color.setHex(0xff0055);
+    }
+
+    // --- 3D Scene Setup (Three.js) ---
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+
+    // Dynamic 3D Object
+    const geometry = new THREE.TorusKnotGeometry(2.5, 0.7, 120, 16);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x7928ca,
+      wireframe: true,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Lights
+    const pointLight = new THREE.PointLight(0xff007f, 2);
+    pointLight.position.set(10, 10, 10);
+    scene.add(pointLight);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    camera.position.z = 7;
+
+    let speed = 0.01;
+
+    // Render Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      mesh.rotation.x += speed;
+      mesh.rotation.y += speed * 1.5;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Responsive design resize listener
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
